@@ -102,7 +102,7 @@ const mockProducts = [
     distance: 2.1,
     rating: 4.5,
     reviews: 45,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   {
@@ -115,7 +115,7 @@ const mockProducts = [
     distance: 2.1,
     rating: 4.4,
     reviews: 38,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   {
@@ -128,7 +128,7 @@ const mockProducts = [
     distance: 3.2,
     rating: 4.6,
     reviews: 29,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   {
@@ -141,7 +141,7 @@ const mockProducts = [
     distance: 3.2,
     rating: 4.3,
     reviews: 22,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   {
@@ -154,7 +154,7 @@ const mockProducts = [
     distance: 2.1,
     rating: 4.7,
     reviews: 67,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   // Fashion
@@ -168,7 +168,7 @@ const mockProducts = [
     distance: 1.5,
     rating: 4.3,
     reviews: 23,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   {
@@ -181,7 +181,7 @@ const mockProducts = [
     distance: 1.5,
     rating: 4.5,
     reviews: 31,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   {
@@ -194,7 +194,7 @@ const mockProducts = [
     distance: 2.8,
     rating: 4.2,
     reviews: 18,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   {
@@ -207,7 +207,7 @@ const mockProducts = [
     distance: 2.8,
     rating: 4.4,
     reviews: 15,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   {
@@ -220,7 +220,7 @@ const mockProducts = [
     distance: 1.5,
     rating: 4.6,
     reviews: 42,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   // Grocery
@@ -234,7 +234,7 @@ const mockProducts = [
     distance: 0.8,
     rating: 4.6,
     reviews: 67,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&h=400&fit=crop",
     category: "Grocery"
   },
   {
@@ -247,7 +247,7 @@ const mockProducts = [
     distance: 0.8,
     rating: 4.5,
     reviews: 89,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&h=400&fit=crop",
     category: "Grocery"
   },
   {
@@ -260,7 +260,7 @@ const mockProducts = [
     distance: 0.8,
     rating: 4.7,
     reviews: 156,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&h=400&fit=crop",
     category: "Grocery"
   },
   {
@@ -273,7 +273,7 @@ const mockProducts = [
     distance: 0.8,
     rating: 4.4,
     reviews: 234,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&h=400&fit=crop",
     category: "Grocery"
   },
   // Home & Kitchen
@@ -287,7 +287,7 @@ const mockProducts = [
     distance: 1.9,
     rating: 4.3,
     reviews: 45,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400&h=400&fit=crop",
     category: "Home & Kitchen"
   },
   {
@@ -300,7 +300,7 @@ const mockProducts = [
     distance: 1.9,
     rating: 4.6,
     reviews: 78,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400&h=400&fit=crop",
     category: "Home & Kitchen"
   },
   {
@@ -313,7 +313,7 @@ const mockProducts = [
     distance: 1.9,
     rating: 4.5,
     reviews: 34,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400&h=400&fit=crop",
     category: "Home & Kitchen"
   },
   // Beauty
@@ -327,7 +327,7 @@ const mockProducts = [
     distance: 2.3,
     rating: 4.2,
     reviews: 67,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
     category: "Beauty"
   },
   {
@@ -340,7 +340,7 @@ const mockProducts = [
     distance: 2.3,
     rating: 4.4,
     reviews: 123,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
     category: "Beauty"
   },
   {
@@ -353,7 +353,7 @@ const mockProducts = [
     distance: 2.3,
     rating: 4.5,
     reviews: 89,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
     category: "Beauty"
   },
   // Sports
@@ -367,7 +367,7 @@ const mockProducts = [
     distance: 3.1,
     rating: 4.3,
     reviews: 34,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
     category: "Sports"
   },
   {
@@ -380,7 +380,7 @@ const mockProducts = [
     distance: 3.1,
     rating: 4.4,
     reviews: 28,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
     category: "Sports"
   },
   {
@@ -393,7 +393,7 @@ const mockProducts = [
     distance: 3.1,
     rating: 4.6,
     reviews: 56,
-    image: "/placeholder.svg",
+    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
     category: "Sports"
   }
 ];
@@ -509,11 +509,11 @@ const LocalMarketplace = () => {
               {filteredProducts.map((product) => (
                 <Card key={product.id} className="hover:shadow-lg transition-shadow">
                   <CardContent className="p-4">
-                    <div className="aspect-square bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
+                    <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden">
                       <img 
                         src={product.image} 
                         alt={product.name}
-                        className="w-full h-full object-cover rounded-lg"
+                        className="w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-200"
                       />
                     </div>
                     
