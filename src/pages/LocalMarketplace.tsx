@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, User, Search, Star, MessageCircle, Filter } from 'lucide-react';
+import { MapPin, User, Search, Star, MessageCircle, Filter, SlidersHorizontal } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
+import FilterSidebar from '@/components/FilterSidebar';
+import TopRatedBadge from '@/components/TopRatedBadge';
 
 // Mock data for local vendors and products
 const mockVendors = [
@@ -405,24 +408,81 @@ const LocalMarketplace = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filteredProducts, setFilteredProducts] = useState(mockProducts);
+  const [filteredVendors, setFilteredVendors] = useState(mockVendors);
   const [activeTab, setActiveTab] = useState("products");
+  
+  // Filter states
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [selectedSellers, setSelectedSellers] = useState<string[]>([]);
+  const [minRating, setMinRating] = useState(0);
+  const [maxDistance, setMaxDistance] = useState(20);
+  const [selectedSellerCategories, setSelectedSellerCategories] = useState<string[]>([]);
+  const [showFilters, setShowFilters] = useState(false);
+
+  // Get available filter options
+  const availableCategories = Array.from(new Set(mockProducts.map(p => p.category)));
+  const availableSellers = Array.from(new Set(mockProducts.map(p => p.vendor)));
+  const availableSellerCategories = Array.from(new Set(mockVendors.map(v => v.category)));
 
   useEffect(() => {
     let filtered = mockProducts;
     
+    // Category filter (both from tabs and advanced filters)
     if (selectedCategory !== "All") {
       filtered = filtered.filter(product => product.category === selectedCategory);
     }
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(product => selectedCategories.includes(product.category));
+    }
     
+    // Seller filter
+    if (selectedSellers.length > 0) {
+      filtered = filtered.filter(product => selectedSellers.includes(product.vendor));
+    }
+    
+    // Rating filter
+    if (minRating > 0) {
+      filtered = filtered.filter(product => product.rating >= minRating);
+    }
+    
+    // Distance filter
+    if (maxDistance < 20) {
+      filtered = filtered.filter(product => product.distance <= maxDistance);
+    }
+    
+    // Search filter (product name only)
     if (searchQuery) {
       filtered = filtered.filter(product => 
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.vendor.toLowerCase().includes(searchQuery.toLowerCase())
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
     }
     
     setFilteredProducts(filtered);
-  }, [searchQuery, selectedCategory]);
+  }, [searchQuery, selectedCategory, selectedCategories, selectedSellers, minRating, maxDistance]);
+
+  useEffect(() => {
+    let filtered = mockVendors;
+    
+    // Distance filter for vendors
+    if (maxDistance < 20) {
+      filtered = filtered.filter(vendor => vendor.distance <= maxDistance);
+    }
+    
+    // Seller category filter
+    if (selectedSellerCategories.length > 0) {
+      filtered = filtered.filter(vendor => selectedSellerCategories.includes(vendor.category));
+    }
+    
+    // Search filter for vendors
+    if (searchQuery) {
+      filtered = filtered.filter(vendor => 
+        vendor.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        vendor.category.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+    
+    setFilteredVendors(filtered);
+  }, [searchQuery, maxDistance, selectedSellerCategories]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -435,6 +495,19 @@ const LocalMarketplace = () => {
   const handleChatWithVendor = (vendorName: string) => {
     alert(`Starting chat with ${vendorName}. This will connect you with the vendor for product inquiries.`);
   };
+
+  const clearAllFilters = () => {
+    setSelectedCategories([]);
+    setSelectedSellers([]);
+    setMinRating(0);
+    setMaxDistance(20);
+    setSelectedSellerCategories([]);
+    setSelectedCategory("All");
+    setSearchQuery("");
+  };
+
+  const hasActiveFilters = selectedCategories.length > 0 || selectedSellers.length > 0 || 
+    minRating > 0 || maxDistance < 20 || selectedSellerCategories.length > 0;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -459,7 +532,7 @@ const LocalMarketplace = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
                   type="text"
-                  placeholder="Search for products, vendors..."
+                  placeholder="Search for products by name..."
                   className="pl-10 bg-white"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -467,8 +540,44 @@ const LocalMarketplace = () => {
               </div>
             </div>
 
-            {/* Profile */}
+            {/* Profile and Filters */}
             <div className="flex items-center space-x-4">
+              <Drawer open={showFilters} onOpenChange={setShowFilters}>
+                <DrawerTrigger asChild>
+                  <Button variant="ghost" size="icon" className="text-blue-100 hover:text-white relative">
+                    <SlidersHorizontal className="h-5 w-5" />
+                    {hasActiveFilters && (
+                      <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 bg-red-500 text-white text-xs rounded-full">
+                        !
+                      </Badge>
+                    )}
+                  </Button>
+                </DrawerTrigger>
+                <DrawerContent className="max-h-[80vh]">
+                  <DrawerHeader>
+                    <DrawerTitle>Filters</DrawerTitle>
+                  </DrawerHeader>
+                  <div className="p-4 overflow-y-auto">
+                    <FilterSidebar
+                      selectedCategories={selectedCategories}
+                      selectedSellers={selectedSellers}
+                      minRating={minRating}
+                      onCategoryChange={setSelectedCategories}
+                      onSellerChange={setSelectedSellers}
+                      onRatingChange={setMinRating}
+                      maxDistance={maxDistance}
+                      selectedSellerCategories={selectedSellerCategories}
+                      onDistanceChange={setMaxDistance}
+                      onSellerCategoryChange={setSelectedSellerCategories}
+                      onClearFilters={clearAllFilters}
+                      availableCategories={availableCategories}
+                      availableSellers={availableSellers}
+                      availableSellerCategories={availableSellerCategories}
+                    />
+                  </div>
+                </DrawerContent>
+              </Drawer>
+              
               <Button variant="ghost" size="icon" className="text-blue-100 hover:text-white">
                 <User className="h-5 w-5" />
               </Button>
@@ -498,125 +607,155 @@ const LocalMarketplace = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2 mb-6">
-            <TabsTrigger value="products">Local Products</TabsTrigger>
-            <TabsTrigger value="vendors">Nearby Vendors</TabsTrigger>
-          </TabsList>
+        <div className="flex gap-6">
+          {/* Desktop Filter Sidebar */}
+          <div className="hidden lg:block">
+            <FilterSidebar
+              selectedCategories={selectedCategories}
+              selectedSellers={selectedSellers}
+              minRating={minRating}
+              onCategoryChange={setSelectedCategories}
+              onSellerChange={setSelectedSellers}
+              onRatingChange={setMinRating}
+              maxDistance={maxDistance}
+              selectedSellerCategories={selectedSellerCategories}
+              onDistanceChange={setMaxDistance}
+              onSellerCategoryChange={setSelectedSellerCategories}
+              onClearFilters={clearAllFilters}
+              availableCategories={availableCategories}
+              availableSellers={availableSellers}
+              availableSellerCategories={availableSellerCategories}
+            />
+          </div>
 
-          <TabsContent value="products">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredProducts.map((product) => (
-                <Card key={product.id} className="hover:shadow-lg transition-shadow">
-                  <CardContent className="p-4">
-                    <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden">
-                      <img 
-                        src={product.image} 
-                        alt={product.name}
-                        className="w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-200"
-                      />
-                    </div>
-                    
-                    <h3 className="font-semibold text-sm mb-2 line-clamp-2">{product.name}</h3>
-                    
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-lg font-bold text-gray-900">
-                        {formatPrice(product.price)}
-                      </span>
-                      <span className="text-sm text-gray-500 line-through">
-                        {formatPrice(product.originalPrice)}
-                      </span>
-                      <span className="text-xs text-green-600 font-medium">
-                        {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% off
-                      </span>
-                    </div>
+          {/* Main Content Area */}
+          <div className="flex-1">
+            <Tabs value={activeTab} onValueChange={setActiveTab}>
+              <TabsList className="grid w-full grid-cols-2 mb-6">
+                <TabsTrigger value="products">
+                  Local Products ({filteredProducts.length})
+                </TabsTrigger>
+                <TabsTrigger value="vendors">
+                  Nearby Vendors ({filteredVendors.length})
+                </TabsTrigger>
+              </TabsList>
 
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center space-x-1">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-xs font-medium">{product.rating}</span>
-                        <span className="text-xs text-gray-500">({product.reviews})</span>
-                      </div>
-                      <Badge variant="outline" className="text-xs">
-                        {product.distance} km away
-                      </Badge>
-                    </div>
+              <TabsContent value="products">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {filteredProducts.map((product) => (
+                    <Card key={product.id} className="hover:shadow-lg transition-shadow">
+                      <CardContent className="p-4">
+                        <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden relative">
+                          <TopRatedBadge rating={product.rating} />
+                          <img 
+                            src={product.image} 
+                            alt={product.name}
+                            className="w-full h-full object-cover rounded-lg hover:scale-105 transition-transform duration-200"
+                          />
+                        </div>
+                        
+                        <h3 className="font-semibold text-sm mb-2 line-clamp-2">{product.name}</h3>
+                        
+                        <div className="flex items-center space-x-2 mb-2">
+                          <span className="text-lg font-bold text-gray-900">
+                            {formatPrice(product.price)}
+                          </span>
+                          <span className="text-sm text-gray-500 line-through">
+                            {formatPrice(product.originalPrice)}
+                          </span>
+                          <span className="text-xs text-green-600 font-medium">
+                            {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% off
+                          </span>
+                        </div>
 
-                    <div className="text-xs text-gray-600 mb-3">
-                      Sold by: <span className="font-medium text-blue-600">{product.vendor}</span>
-                    </div>
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center space-x-1">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            <span className="text-xs font-medium">{product.rating}</span>
+                            <span className="text-xs text-gray-500">({product.reviews})</span>
+                          </div>
+                          <Badge variant="outline" className="text-xs">
+                            {product.distance} km away
+                          </Badge>
+                        </div>
 
-                    <div className="flex space-x-2">
-                      <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
-                        Add to Cart
-                      </Button>
-                      <Button 
-                        size="sm" 
-                        variant="outline"
-                        onClick={() => handleChatWithVendor(product.vendor)}
-                      >
-                        <MessageCircle className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
+                        <div className="text-xs text-gray-600 mb-3">
+                          Sold by: <span className="font-medium text-blue-600">{product.vendor}</span>
+                        </div>
 
-          <TabsContent value="vendors">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mockVendors.map((vendor) => (
-                <Card key={vendor.id} className="hover:shadow-lg transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-lg">{vendor.name}</CardTitle>
-                        <CardDescription className="flex items-center space-x-2">
-                          <MapPin className="h-3 w-3" />
-                          <span>{vendor.location}</span>
-                        </CardDescription>
-                      </div>
-                      {vendor.verified && (
-                        <Badge className="bg-green-100 text-green-800 border-green-200">
-                          Verified
-                        </Badge>
-                      )}
-                    </div>
-                  </CardHeader>
-                  
-                  <CardContent>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between">
-                        <Badge variant="outline">{vendor.category}</Badge>
-                        <span className="text-sm text-gray-600">{vendor.distance} km away</span>
-                      </div>
+                        <div className="flex space-x-2">
+                          <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
+                            Add to Cart
+                          </Button>
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => handleChatWithVendor(product.vendor)}
+                          >
+                            <MessageCircle className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="vendors">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredVendors.map((vendor) => (
+                    <Card key={vendor.id} className="hover:shadow-lg transition-shadow">
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <CardTitle className="text-lg">{vendor.name}</CardTitle>
+                            <CardDescription className="flex items-center space-x-2">
+                              <MapPin className="h-3 w-3" />
+                              <span>{vendor.location}</span>
+                            </CardDescription>
+                          </div>
+                          {vendor.verified && (
+                            <Badge className="bg-green-100 text-green-800 border-green-200">
+                              Verified
+                            </Badge>
+                          )}
+                        </div>
+                      </CardHeader>
                       
-                      <div className="flex items-center space-x-2">
-                        <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                        <span className="font-medium">{vendor.rating}</span>
-                        <span className="text-gray-500">({vendor.reviews} reviews)</span>
-                      </div>
+                      <CardContent>
+                        <div className="space-y-3">
+                          <div className="flex items-center justify-between">
+                            <Badge variant="outline">{vendor.category}</Badge>
+                            <span className="text-sm text-gray-600">{vendor.distance} km away</span>
+                          </div>
+                          
+                          <div className="flex items-center space-x-2">
+                            <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                            <span className="font-medium">{vendor.rating}</span>
+                            <span className="text-gray-500">({vendor.reviews} reviews)</span>
+                          </div>
 
-                      <div className="flex space-x-2">
-                        <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
-                          View Products
-                        </Button>
-                        <Button 
-                          size="sm" 
-                          variant="outline"
-                          onClick={() => handleChatWithVendor(vendor.name)}
-                        >
-                          <MessageCircle className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </TabsContent>
-        </Tabs>
+                          <div className="flex space-x-2">
+                            <Button size="sm" className="flex-1 bg-blue-600 hover:bg-blue-700">
+                              View Products
+                            </Button>
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              onClick={() => handleChatWithVendor(vendor.name)}
+                            >
+                              <MessageCircle className="h-4 w-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </TabsContent>
+            </Tabs>
+          </div>
+        </div>
       </div>
 
       {/* Location Range Info */}
@@ -625,7 +764,7 @@ const LocalMarketplace = () => {
           <div className="flex items-center justify-center space-x-2 text-blue-700">
             <MapPin className="h-4 w-4" />
             <span className="text-sm">
-              Showing vendors and products within 20 km of your location
+              Showing vendors and products within {maxDistance} km of your location
             </span>
           </div>
         </div>
