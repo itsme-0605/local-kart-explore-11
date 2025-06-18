@@ -102,7 +102,7 @@ const mockProducts = [
     distance: 2.1,
     rating: 4.5,
     reviews: 45,
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   {
@@ -115,7 +115,7 @@ const mockProducts = [
     distance: 2.1,
     rating: 4.4,
     reviews: 38,
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   {
@@ -128,7 +128,7 @@ const mockProducts = [
     distance: 3.2,
     rating: 4.6,
     reviews: 29,
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1541807084-5c52b6b3adef?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   {
@@ -141,7 +141,7 @@ const mockProducts = [
     distance: 3.2,
     rating: 4.3,
     reviews: 22,
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   {
@@ -154,7 +154,7 @@ const mockProducts = [
     distance: 2.1,
     rating: 4.7,
     reviews: 67,
-    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&h=400&fit=crop",
     category: "Electronics"
   },
   // Fashion
@@ -168,7 +168,7 @@ const mockProducts = [
     distance: 1.5,
     rating: 4.3,
     reviews: 23,
-    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   {
@@ -181,7 +181,7 @@ const mockProducts = [
     distance: 1.5,
     rating: 4.5,
     reviews: 31,
-    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1551107696-a4b537c892a2?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   {
@@ -194,7 +194,7 @@ const mockProducts = [
     distance: 2.8,
     rating: 4.2,
     reviews: 18,
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1542272604-787c3835535d?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   {
@@ -207,7 +207,7 @@ const mockProducts = [
     distance: 2.8,
     rating: 4.4,
     reviews: 15,
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   {
@@ -220,7 +220,7 @@ const mockProducts = [
     distance: 1.5,
     rating: 4.6,
     reviews: 42,
-    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&h=400&fit=crop",
     category: "Fashion"
   },
   // Grocery
@@ -234,7 +234,7 @@ const mockProducts = [
     distance: 0.8,
     rating: 4.6,
     reviews: 67,
-    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=400&fit=crop",
     category: "Grocery"
   },
   {
@@ -247,7 +247,7 @@ const mockProducts = [
     distance: 0.8,
     rating: 4.5,
     reviews: 89,
-    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400&h=400&fit=crop",
     category: "Grocery"
   },
   {
@@ -260,7 +260,7 @@ const mockProducts = [
     distance: 0.8,
     rating: 4.7,
     reviews: 156,
-    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=400&fit=crop",
     category: "Grocery"
   },
   {
@@ -273,7 +273,7 @@ const mockProducts = [
     distance: 0.8,
     rating: 4.4,
     reviews: 234,
-    image: "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400&h=400&fit=crop",
     category: "Grocery"
   },
   // Home & Kitchen
@@ -287,7 +287,7 @@ const mockProducts = [
     distance: 1.9,
     rating: 4.3,
     reviews: 45,
-    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=400&fit=crop",
     category: "Home & Kitchen"
   },
   {
@@ -300,7 +300,7 @@ const mockProducts = [
     distance: 1.9,
     rating: 4.6,
     reviews: 78,
-    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&h=400&fit=crop",
     category: "Home & Kitchen"
   },
   {
@@ -313,7 +313,7 @@ const mockProducts = [
     distance: 1.9,
     rating: 4.5,
     reviews: 34,
-    image: "https://images.unsplash.com/photo-1721322800607-8c38375eef04?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1574269909862-7e1d70bb8fd2?w=400&h=400&fit=crop",
     category: "Home & Kitchen"
   },
   // Beauty
@@ -327,7 +327,7 @@ const mockProducts = [
     distance: 2.3,
     rating: 4.2,
     reviews: 67,
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=400&h=400&fit=crop",
     category: "Beauty"
   },
   {
@@ -340,7 +340,7 @@ const mockProducts = [
     distance: 2.3,
     rating: 4.4,
     reviews: 123,
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=400&fit=crop",
     category: "Beauty"
   },
   {
@@ -353,7 +353,7 @@ const mockProducts = [
     distance: 2.3,
     rating: 4.5,
     reviews: 89,
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&h=400&fit=crop",
     category: "Beauty"
   },
   // Sports
@@ -367,7 +367,7 @@ const mockProducts = [
     distance: 3.1,
     rating: 4.3,
     reviews: 34,
-    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=400&h=400&fit=crop",
     category: "Sports"
   },
   {
@@ -380,7 +380,7 @@ const mockProducts = [
     distance: 3.1,
     rating: 4.4,
     reviews: 28,
-    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1579952363873-27d3bfad9c0d?w=400&h=400&fit=crop",
     category: "Sports"
   },
   {
@@ -393,7 +393,7 @@ const mockProducts = [
     distance: 3.1,
     rating: 4.6,
     reviews: 56,
-    image: "https://images.unsplash.com/photo-1582562124811-c09040d0a901?w=400&h=400&fit=crop",
+    image: "https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=400&h=400&fit=crop",
     category: "Sports"
   }
 ];
