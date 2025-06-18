@@ -416,13 +416,20 @@ const LocalMarketplace = () => {
   const [selectedSellers, setSelectedSellers] = useState<string[]>([]);
   const [minRating, setMinRating] = useState(0);
   const [maxDistance, setMaxDistance] = useState(20);
-  const [selectedSellerCategories, setSelectedSellerCategories] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Get available filter options
-  const availableCategories = Array.from(new Set(mockProducts.map(p => p.category)));
+  // Get available filter options based on active tab
+  const getAvailableCategories = () => {
+    if (activeTab === 'products') {
+      return Array.from(new Set(mockProducts.map(p => p.category)));
+    } else {
+      // For vendors tab, show categories of products they sell
+      return Array.from(new Set(mockVendors.map(v => v.category)));
+    }
+  };
+
+  const availableCategories = getAvailableCategories();
   const availableSellers = Array.from(new Set(mockProducts.map(p => p.vendor)));
-  const availableSellerCategories = Array.from(new Set(mockVendors.map(v => v.category)));
 
   useEffect(() => {
     let filtered = mockProducts;
@@ -468,9 +475,14 @@ const LocalMarketplace = () => {
       filtered = filtered.filter(vendor => vendor.distance <= maxDistance);
     }
     
-    // Seller category filter
-    if (selectedSellerCategories.length > 0) {
-      filtered = filtered.filter(vendor => selectedSellerCategories.includes(vendor.category));
+    // Category filter for vendors (based on what they sell)
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter(vendor => selectedCategories.includes(vendor.category));
+    }
+    
+    // Rating filter for vendors
+    if (minRating > 0) {
+      filtered = filtered.filter(vendor => vendor.rating >= minRating);
     }
     
     // Search filter for vendors
@@ -482,7 +494,7 @@ const LocalMarketplace = () => {
     }
     
     setFilteredVendors(filtered);
-  }, [searchQuery, maxDistance, selectedSellerCategories]);
+  }, [searchQuery, maxDistance, selectedCategories, minRating]);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-IN', {
@@ -501,22 +513,21 @@ const LocalMarketplace = () => {
     setSelectedSellers([]);
     setMinRating(0);
     setMaxDistance(20);
-    setSelectedSellerCategories([]);
     setSelectedCategory("All");
     setSearchQuery("");
   };
 
   const hasActiveFilters = selectedCategories.length > 0 || selectedSellers.length > 0 || 
-    minRating > 0 || maxDistance < 20 || selectedSellerCategories.length > 0;
+    minRating > 0 || maxDistance < 20;
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-blue-600 text-white shadow-md">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold">Flipkart Local</h1>
+              <h1 className="text-xl lg:text-2xl font-bold">Flipkart Local</h1>
               <div className="flex items-center space-x-2 text-blue-100">
                 <MapPin className="h-4 w-4" />
                 <span className="text-sm">{currentLocation}</span>
@@ -527,7 +538,7 @@ const LocalMarketplace = () => {
             </div>
             
             {/* Search Bar */}
-            <div className="flex-1 max-w-2xl mx-8">
+            <div className="flex-1 w-full max-w-2xl lg:mx-8">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
                 <Input
@@ -544,7 +555,7 @@ const LocalMarketplace = () => {
             <div className="flex items-center space-x-4">
               <Drawer open={showFilters} onOpenChange={setShowFilters}>
                 <DrawerTrigger asChild>
-                  <Button variant="ghost" size="icon" className="text-blue-100 hover:text-white relative">
+                  <Button variant="ghost" size="icon" className="text-blue-100 hover:text-white relative lg:hidden">
                     <SlidersHorizontal className="h-5 w-5" />
                     {hasActiveFilters && (
                       <Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 bg-red-500 text-white text-xs rounded-full">
@@ -559,6 +570,7 @@ const LocalMarketplace = () => {
                   </DrawerHeader>
                   <div className="p-4 overflow-y-auto">
                     <FilterSidebar
+                      activeTab={activeTab as 'products' | 'vendors'}
                       selectedCategories={selectedCategories}
                       selectedSellers={selectedSellers}
                       minRating={minRating}
@@ -566,13 +578,10 @@ const LocalMarketplace = () => {
                       onSellerChange={setSelectedSellers}
                       onRatingChange={setMinRating}
                       maxDistance={maxDistance}
-                      selectedSellerCategories={selectedSellerCategories}
                       onDistanceChange={setMaxDistance}
-                      onSellerCategoryChange={setSelectedSellerCategories}
                       onClearFilters={clearAllFilters}
                       availableCategories={availableCategories}
                       availableSellers={availableSellers}
-                      availableSellerCategories={availableSellerCategories}
                     />
                   </div>
                 </DrawerContent>
@@ -596,7 +605,7 @@ const LocalMarketplace = () => {
                 variant={selectedCategory === category ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedCategory(category)}
-                className={selectedCategory === category ? "bg-blue-600 hover:bg-blue-700" : ""}
+                className={`whitespace-nowrap ${selectedCategory === category ? "bg-blue-600 hover:bg-blue-700" : ""}`}
               >
                 {category}
               </Button>
@@ -607,10 +616,11 @@ const LocalMarketplace = () => {
 
       {/* Main Content */}
       <div className="container mx-auto px-4 py-6">
-        <div className="flex gap-6">
+        <div className="flex flex-col lg:flex-row gap-6">
           {/* Desktop Filter Sidebar */}
           <div className="hidden lg:block">
             <FilterSidebar
+              activeTab={activeTab as 'products' | 'vendors'}
               selectedCategories={selectedCategories}
               selectedSellers={selectedSellers}
               minRating={minRating}
@@ -618,13 +628,10 @@ const LocalMarketplace = () => {
               onSellerChange={setSelectedSellers}
               onRatingChange={setMinRating}
               maxDistance={maxDistance}
-              selectedSellerCategories={selectedSellerCategories}
               onDistanceChange={setMaxDistance}
-              onSellerCategoryChange={setSelectedSellerCategories}
               onClearFilters={clearAllFilters}
               availableCategories={availableCategories}
               availableSellers={availableSellers}
-              availableSellerCategories={availableSellerCategories}
             />
           </div>
 
@@ -641,7 +648,7 @@ const LocalMarketplace = () => {
               </TabsList>
 
               <TabsContent value="products">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
                   {filteredProducts.map((product) => (
                     <Card key={product.id} className="hover:shadow-lg transition-shadow">
                       <CardContent className="p-4">
@@ -702,7 +709,7 @@ const LocalMarketplace = () => {
               </TabsContent>
 
               <TabsContent value="vendors">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
                   {filteredVendors.map((vendor) => (
                     <Card key={vendor.id} className="hover:shadow-lg transition-shadow">
                       <CardHeader>

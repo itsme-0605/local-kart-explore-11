@@ -8,6 +8,8 @@ import { Badge } from '@/components/ui/badge';
 import { Star, X } from 'lucide-react';
 
 interface FilterSidebarProps {
+  activeTab: 'products' | 'vendors';
+  
   // Product filters
   selectedCategories: string[];
   selectedSellers: string[];
@@ -16,11 +18,9 @@ interface FilterSidebarProps {
   onSellerChange: (sellers: string[]) => void;
   onRatingChange: (rating: number) => void;
   
-  // Seller filters
+  // Common filters
   maxDistance: number;
-  selectedSellerCategories: string[];
   onDistanceChange: (distance: number) => void;
-  onSellerCategoryChange: (categories: string[]) => void;
   
   // Clear filters
   onClearFilters: () => void;
@@ -28,10 +28,10 @@ interface FilterSidebarProps {
   // Available options
   availableCategories: string[];
   availableSellers: string[];
-  availableSellerCategories: string[];
 }
 
 const FilterSidebar: React.FC<FilterSidebarProps> = ({
+  activeTab,
   selectedCategories,
   selectedSellers,
   minRating,
@@ -39,13 +39,10 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
   onSellerChange,
   onRatingChange,
   maxDistance,
-  selectedSellerCategories,
   onDistanceChange,
-  onSellerCategoryChange,
   onClearFilters,
   availableCategories,
   availableSellers,
-  availableSellerCategories,
 }) => {
   const handleCategoryChange = (category: string, checked: boolean) => {
     if (checked) {
@@ -63,22 +60,16 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
     }
   };
 
-  const handleSellerCategoryChange = (category: string, checked: boolean) => {
-    if (checked) {
-      onSellerCategoryChange([...selectedSellerCategories, category]);
-    } else {
-      onSellerCategoryChange(selectedSellerCategories.filter(c => c !== category));
-    }
-  };
-
   const hasActiveFilters = selectedCategories.length > 0 || selectedSellers.length > 0 || 
-    minRating > 0 || maxDistance < 20 || selectedSellerCategories.length > 0;
+    minRating > 0 || maxDistance < 20;
 
   return (
-    <div className="w-80 space-y-6">
+    <div className="w-full lg:w-80 space-y-4 lg:space-y-6">
       {/* Filter Header */}
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Filters</h3>
+        <h3 className="text-base lg:text-lg font-semibold">
+          {activeTab === 'products' ? 'Product Filters' : 'Seller Filters'}
+        </h3>
         {hasActiveFilters && (
           <Button
             variant="outline"
@@ -92,49 +83,55 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         )}
       </div>
 
-      {/* Product Category Filter */}
+      {/* Product Category Filter - Always shown */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-sm">Product Categories</CardTitle>
+          <CardTitle className="text-sm">
+            {activeTab === 'products' ? 'Product Categories' : 'Product Categories Sold'}
+          </CardTitle>
         </CardHeader>
         <CardContent className="space-y-2">
-          {availableCategories.map((category) => (
-            <div key={category} className="flex items-center space-x-2">
-              <Checkbox
-                id={`category-${category}`}
-                checked={selectedCategories.includes(category)}
-                onCheckedChange={(checked) => handleCategoryChange(category, checked as boolean)}
-              />
-              <label htmlFor={`category-${category}`} className="text-xs cursor-pointer">
-                {category}
-              </label>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
-      {/* Seller Filter */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm">Sellers</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div className="max-h-40 overflow-y-auto space-y-2">
-            {availableSellers.map((seller) => (
-              <div key={seller} className="flex items-center space-x-2">
+          <div className="max-h-32 lg:max-h-40 overflow-y-auto space-y-2">
+            {availableCategories.map((category) => (
+              <div key={category} className="flex items-center space-x-2">
                 <Checkbox
-                  id={`seller-${seller}`}
-                  checked={selectedSellers.includes(seller)}
-                  onCheckedChange={(checked) => handleSellerChange(seller, checked as boolean)}
+                  id={`category-${category}`}
+                  checked={selectedCategories.includes(category)}
+                  onCheckedChange={(checked) => handleCategoryChange(category, checked as boolean)}
                 />
-                <label htmlFor={`seller-${seller}`} className="text-xs cursor-pointer line-clamp-1">
-                  {seller}
+                <label htmlFor={`category-${category}`} className="text-xs cursor-pointer">
+                  {category}
                 </label>
               </div>
             ))}
           </div>
         </CardContent>
       </Card>
+
+      {/* Seller Filter - Only for products tab */}
+      {activeTab === 'products' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm">Sellers</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-2">
+            <div className="max-h-32 lg:max-h-40 overflow-y-auto space-y-2">
+              {availableSellers.map((seller) => (
+                <div key={seller} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`seller-${seller}`}
+                    checked={selectedSellers.includes(seller)}
+                    onCheckedChange={(checked) => handleSellerChange(seller, checked as boolean)}
+                  />
+                  <label htmlFor={`seller-${seller}`} className="text-xs cursor-pointer line-clamp-1">
+                    {seller}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Rating Filter */}
       <Card>
@@ -177,27 +174,6 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
         </CardContent>
       </Card>
 
-      {/* Seller Category Filter */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-sm">Seller Categories</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          {availableSellerCategories.map((category) => (
-            <div key={category} className="flex items-center space-x-2">
-              <Checkbox
-                id={`seller-category-${category}`}
-                checked={selectedSellerCategories.includes(category)}
-                onCheckedChange={(checked) => handleSellerCategoryChange(category, checked as boolean)}
-              />
-              <label htmlFor={`seller-category-${category}`} className="text-xs cursor-pointer">
-                {category}
-              </label>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
-
       {/* Active Filters Display */}
       {hasActiveFilters && (
         <Card>
@@ -215,7 +191,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   />
                 </Badge>
               ))}
-              {selectedSellers.slice(0, 2).map((seller) => (
+              {activeTab === 'products' && selectedSellers.slice(0, 2).map((seller) => (
                 <Badge key={seller} variant="secondary" className="text-xs">
                   {seller.length > 10 ? seller.substring(0, 10) + '...' : seller}
                   <X 
@@ -224,7 +200,7 @@ const FilterSidebar: React.FC<FilterSidebarProps> = ({
                   />
                 </Badge>
               ))}
-              {selectedSellers.length > 2 && (
+              {activeTab === 'products' && selectedSellers.length > 2 && (
                 <Badge variant="secondary" className="text-xs">
                   +{selectedSellers.length - 2} more
                 </Badge>
