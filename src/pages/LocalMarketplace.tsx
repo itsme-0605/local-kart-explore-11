@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MapPin, User, Search, Star, MessageCircle, Filter } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,45 +10,96 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 const mockVendors = [
   {
     id: 1,
-    name: "Local Electronics Hub",
+    name: "Tech Zone Electronics",
     category: "Electronics",
-    distance: 2.5,
+    distance: 2.1,
     rating: 4.5,
     reviews: 234,
-    location: "Sector 18, Noida",
+    location: "Koramangala, Bangalore",
     verified: true
   },
   {
     id: 2,
-    name: "Fashion Corner",
+    name: "Style Hub Fashion",
     category: "Fashion",
-    distance: 1.8,
+    distance: 1.5,
     rating: 4.2,
     reviews: 156,
-    location: "Connaught Place, Delhi",
+    location: "Indiranagar, Bangalore",
     verified: true
   },
   {
     id: 3,
-    name: "Fresh Grocery Store",
+    name: "Fresh Mart Grocery",
     category: "Grocery",
     distance: 0.8,
     rating: 4.7,
-    reviews: 89,
-    location: "Lajpat Nagar, Delhi",
+    reviews: 289,
+    location: "ETV Layout, Bangalore",
+    verified: true
+  },
+  {
+    id: 4,
+    name: "Gadget World",
+    category: "Electronics",
+    distance: 3.2,
+    rating: 4.3,
+    reviews: 178,
+    location: "BTM Layout, Bangalore",
+    verified: true
+  },
+  {
+    id: 5,
+    name: "Fashion Forward",
+    category: "Fashion",
+    distance: 2.8,
+    rating: 4.4,
+    reviews: 145,
+    location: "HSR Layout, Bangalore",
+    verified: true
+  },
+  {
+    id: 6,
+    name: "Home Essentials",
+    category: "Home & Kitchen",
+    distance: 1.9,
+    rating: 4.6,
+    reviews: 203,
+    location: "Jayanagar, Bangalore",
+    verified: true
+  },
+  {
+    id: 7,
+    name: "Beauty Corner",
+    category: "Beauty",
+    distance: 2.3,
+    rating: 4.5,
+    reviews: 167,
+    location: "JP Nagar, Bangalore",
+    verified: true
+  },
+  {
+    id: 8,
+    name: "Sports Arena",
+    category: "Sports",
+    distance: 3.1,
+    rating: 4.2,
+    reviews: 134,
+    location: "Banashankari, Bangalore",
     verified: true
   }
 ];
 
 const mockProducts = [
+  // Electronics
   {
     id: 1,
     name: "iPhone 15 Pro Max",
     price: 159900,
     originalPrice: 169900,
-    vendor: "Local Electronics Hub",
+    vendor: "Tech Zone Electronics",
     vendorId: 1,
-    distance: 2.5,
+    distance: 2.1,
     rating: 4.5,
     reviews: 45,
     image: "/placeholder.svg",
@@ -57,36 +107,301 @@ const mockProducts = [
   },
   {
     id: 2,
+    name: "Samsung Galaxy S24 Ultra",
+    price: 124999,
+    originalPrice: 134999,
+    vendor: "Tech Zone Electronics",
+    vendorId: 1,
+    distance: 2.1,
+    rating: 4.4,
+    reviews: 38,
+    image: "/placeholder.svg",
+    category: "Electronics"
+  },
+  {
+    id: 3,
+    name: "MacBook Air M3",
+    price: 114900,
+    originalPrice: 124900,
+    vendor: "Gadget World",
+    vendorId: 4,
+    distance: 3.2,
+    rating: 4.6,
+    reviews: 29,
+    image: "/placeholder.svg",
+    category: "Electronics"
+  },
+  {
+    id: 4,
+    name: "Dell XPS 13",
+    price: 89999,
+    originalPrice: 99999,
+    vendor: "Gadget World",
+    vendorId: 4,
+    distance: 3.2,
+    rating: 4.3,
+    reviews: 22,
+    image: "/placeholder.svg",
+    category: "Electronics"
+  },
+  {
+    id: 5,
+    name: "Sony WH-1000XM5",
+    price: 29990,
+    originalPrice: 34990,
+    vendor: "Tech Zone Electronics",
+    vendorId: 1,
+    distance: 2.1,
+    rating: 4.7,
+    reviews: 67,
+    image: "/placeholder.svg",
+    category: "Electronics"
+  },
+  // Fashion
+  {
+    id: 6,
     name: "Nike Air Max 270",
     price: 12995,
     originalPrice: 14995,
-    vendor: "Fashion Corner",
+    vendor: "Style Hub Fashion",
     vendorId: 2,
-    distance: 1.8,
+    distance: 1.5,
     rating: 4.3,
     reviews: 23,
     image: "/placeholder.svg",
     category: "Fashion"
   },
   {
-    id: 3,
+    id: 7,
+    name: "Adidas Ultraboost 22",
+    price: 16999,
+    originalPrice: 18999,
+    vendor: "Style Hub Fashion",
+    vendorId: 2,
+    distance: 1.5,
+    rating: 4.5,
+    reviews: 31,
+    image: "/placeholder.svg",
+    category: "Fashion"
+  },
+  {
+    id: 8,
+    name: "Levi's 511 Slim Jeans",
+    price: 3499,
+    originalPrice: 4499,
+    vendor: "Fashion Forward",
+    vendorId: 5,
+    distance: 2.8,
+    rating: 4.2,
+    reviews: 18,
+    image: "/placeholder.svg",
+    category: "Fashion"
+  },
+  {
+    id: 9,
+    name: "Tommy Hilfiger Polo Shirt",
+    price: 2999,
+    originalPrice: 3999,
+    vendor: "Fashion Forward",
+    vendorId: 5,
+    distance: 2.8,
+    rating: 4.4,
+    reviews: 15,
+    image: "/placeholder.svg",
+    category: "Fashion"
+  },
+  {
+    id: 10,
+    name: "Ray-Ban Aviator Sunglasses",
+    price: 8999,
+    originalPrice: 10999,
+    vendor: "Style Hub Fashion",
+    vendorId: 2,
+    distance: 1.5,
+    rating: 4.6,
+    reviews: 42,
+    image: "/placeholder.svg",
+    category: "Fashion"
+  },
+  // Grocery
+  {
+    id: 11,
     name: "Organic Basmati Rice 5kg",
     price: 850,
     originalPrice: 950,
-    vendor: "Fresh Grocery Store",
+    vendor: "Fresh Mart Grocery",
     vendorId: 3,
     distance: 0.8,
     rating: 4.6,
     reviews: 67,
     image: "/placeholder.svg",
     category: "Grocery"
+  },
+  {
+    id: 12,
+    name: "Fresh Chicken 1kg",
+    price: 280,
+    originalPrice: 320,
+    vendor: "Fresh Mart Grocery",
+    vendorId: 3,
+    distance: 0.8,
+    rating: 4.5,
+    reviews: 89,
+    image: "/placeholder.svg",
+    category: "Grocery"
+  },
+  {
+    id: 13,
+    name: "Amul Fresh Milk 1L",
+    price: 62,
+    originalPrice: 65,
+    vendor: "Fresh Mart Grocery",
+    vendorId: 3,
+    distance: 0.8,
+    rating: 4.7,
+    reviews: 156,
+    image: "/placeholder.svg",
+    category: "Grocery"
+  },
+  {
+    id: 14,
+    name: "Fortune Sunflower Oil 1L",
+    price: 140,
+    originalPrice: 155,
+    vendor: "Fresh Mart Grocery",
+    vendorId: 3,
+    distance: 0.8,
+    rating: 4.4,
+    reviews: 234,
+    image: "/placeholder.svg",
+    category: "Grocery"
+  },
+  // Home & Kitchen
+  {
+    id: 15,
+    name: "Prestige Induction Cooktop",
+    price: 3499,
+    originalPrice: 4299,
+    vendor: "Home Essentials",
+    vendorId: 6,
+    distance: 1.9,
+    rating: 4.3,
+    reviews: 45,
+    image: "/placeholder.svg",
+    category: "Home & Kitchen"
+  },
+  {
+    id: 16,
+    name: "Hawkins Pressure Cooker 5L",
+    price: 2999,
+    originalPrice: 3499,
+    vendor: "Home Essentials",
+    vendorId: 6,
+    distance: 1.9,
+    rating: 4.6,
+    reviews: 78,
+    image: "/placeholder.svg",
+    category: "Home & Kitchen"
+  },
+  {
+    id: 17,
+    name: "Philips Air Fryer",
+    price: 12999,
+    originalPrice: 15999,
+    vendor: "Home Essentials",
+    vendorId: 6,
+    distance: 1.9,
+    rating: 4.5,
+    reviews: 34,
+    image: "/placeholder.svg",
+    category: "Home & Kitchen"
+  },
+  // Beauty
+  {
+    id: 18,
+    name: "Lakme 9to5 Foundation",
+    price: 899,
+    originalPrice: 999,
+    vendor: "Beauty Corner",
+    vendorId: 7,
+    distance: 2.3,
+    rating: 4.2,
+    reviews: 67,
+    image: "/placeholder.svg",
+    category: "Beauty"
+  },
+  {
+    id: 19,
+    name: "L'Oreal Paris Shampoo",
+    price: 349,
+    originalPrice: 399,
+    vendor: "Beauty Corner",
+    vendorId: 7,
+    distance: 2.3,
+    rating: 4.4,
+    reviews: 123,
+    image: "/placeholder.svg",
+    category: "Beauty"
+  },
+  {
+    id: 20,
+    name: "Nivea Moisturizer",
+    price: 299,
+    originalPrice: 349,
+    vendor: "Beauty Corner",
+    vendorId: 7,
+    distance: 2.3,
+    rating: 4.5,
+    reviews: 89,
+    image: "/placeholder.svg",
+    category: "Beauty"
+  },
+  // Sports
+  {
+    id: 21,
+    name: "Yonex Badminton Racket",
+    price: 4999,
+    originalPrice: 5999,
+    vendor: "Sports Arena",
+    vendorId: 8,
+    distance: 3.1,
+    rating: 4.3,
+    reviews: 34,
+    image: "/placeholder.svg",
+    category: "Sports"
+  },
+  {
+    id: 22,
+    name: "Nike Football",
+    price: 1499,
+    originalPrice: 1799,
+    vendor: "Sports Arena",
+    vendorId: 8,
+    distance: 3.1,
+    rating: 4.4,
+    reviews: 28,
+    image: "/placeholder.svg",
+    category: "Sports"
+  },
+  {
+    id: 23,
+    name: "Decathlon Yoga Mat",
+    price: 899,
+    originalPrice: 1199,
+    vendor: "Sports Arena",
+    vendorId: 8,
+    distance: 3.1,
+    rating: 4.6,
+    reviews: 56,
+    image: "/placeholder.svg",
+    category: "Sports"
   }
 ];
 
 const categories = ["All", "Electronics", "Fashion", "Grocery", "Home & Kitchen", "Beauty", "Sports"];
 
 const LocalMarketplace = () => {
-  const [currentLocation, setCurrentLocation] = useState("Connaught Place, New Delhi");
+  const [currentLocation, setCurrentLocation] = useState("ETV Bangalore");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [filteredProducts, setFilteredProducts] = useState(mockProducts);
